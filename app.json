@@ -1,0 +1,17 @@
+{
+  "name": "Video Downloader Bot",
+  "stack": "container",
+  "env": {
+    "BOT_TOKEN": {
+      "description": "Bot Token of your Telegram Bot from @BotFather"
+    },
+    "API_ID": {
+      "description": "your telegram app id",
+      "value": ""
+    },
+    "API_HASH": {
+      "description": "your telegram api hash",
+      "value": ""
+    }
+  }
+}
