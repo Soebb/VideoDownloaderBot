@@ -25,7 +25,7 @@ bot = Client("bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 with bot:
     BOT = bot.get_me().username.lower()
 
-auth_users = list(eval(os.environ.get("AUTH_USERS")))
+auth_users = list(eval(int(os.environ.get("AUTH_USERS"))))
 sudo_groups = list(eval(os.environ.get("GROUPS")))
 sudo_html_groups = list(eval(os.environ.get("HTML_GROUPS")))
 sudo_users = auth_users
