@@ -22,13 +22,6 @@ BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
 bot = Client("bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
-with bot:
-    BOT = bot.get_me().username.lower()
-
-auth_users = list(eval(int(os.environ.get("AUTH_USERS"))))
-sudo_groups = list(eval(os.environ.get("GROUPS")))
-sudo_html_groups = list(eval(os.environ.get("HTML_GROUPS")))
-sudo_users = auth_users
 
 thumb = os.environ.get("THUMB")
 if thumb.startswith("http://") or thumb.startswith("https://"):
@@ -264,14 +257,7 @@ async def choose_html_video_format(bot, query):
     await download_videos(msg, videos, start_index)
 
 
-@bot.on_message(
-    (
-        (filters.command("download_html") & ~filters.group)
-        | filters.regex(f"^/download_html@{BOT}")
-    )
-    & (filters.chat(sudo_html_groups) | filters.user(sudo_users))
-    & (filters.document | filters.reply)
-)
+@bot.on_message((filters.command("download_html") & (filters.document | filters.reply))
 async def download_html(bot, msg):
     if msg.reply_to_message is not None:
         if msg.reply_to_message.document is not None:
@@ -309,13 +295,7 @@ async def download_html(bot, msg):
     os.remove(file)
 
 
-@bot.on_message(
-    (
-        (filters.command("download_html") & ~filters.group)
-        | filters.regex(f"^/download_html@{BOT}")
-    )
-    & (filters.chat(sudo_html_groups) | filters.user(sudo_users))
-)
+@bot.on_message(filters.command("download_html"))
 async def download_html_info(bot, message):
     await message.reply(
         "Send html with command as caption or reply.\n"
@@ -453,13 +433,7 @@ async def choose_video_format(bot, query):
     await download_videos(message, videos)
 
 
-@bot.on_message(
-    (
-        (filters.command("download_link") & ~filters.group)
-        | filters.regex(f"^/download_link@{BOT}")
-    )
-    & (filters.chat(sudo_groups) | filters.user(sudo_users))
-)
+@bot.on_message(filters.command("download_link"))
 async def download_link(bot, message):
     user = message.from_user.id
     commands = message.text.split()
@@ -473,7 +447,7 @@ async def download_link(bot, message):
         )
         return
     if commands[-1] == "f":
-        if user not in sudo_users and len(commands) > 3:
+        if len(commands) > 3:
             await message.reply("Not authorized for this action.", quote=True)
             return
         formats = ["144", "240", "360", "480", "720"]
@@ -485,7 +459,7 @@ async def download_link(bot, message):
         buttons_markup = InlineKeyboardMarkup([buttons])
         await message.reply("Choose Format", quote=True, reply_markup=buttons_markup)
     else:
-        if user not in sudo_users and len(commands) > 2:
+        if len(commands) > 2:
             await message.reply("Not authorized for this action.", quote=True)
             return
         def_format = "360"
