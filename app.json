@@ -5,6 +5,10 @@
     "BOT_TOKEN": {
       "description": "Bot Token of your Telegram Bot from @BotFather"
     },
+    "THUMB": {
+      "description": "Add your thumbnail url",
+      "value": "https://telegra.ph/file/7adee9735e65353398942.jpg"
+    },
     "API_ID": {
       "description": "your telegram app id",
       "value": ""
